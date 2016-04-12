@@ -5,7 +5,7 @@ import com.lambdista.util.Try;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineManager {
+public class PipelineManager implements iPipelineManager{
     List<iPipeline> credentialList = new ArrayList<>();
 
     public Try<Boolean> execute(){
@@ -21,3 +21,4 @@ public class PipelineManager {
         credentialList.add(credential);
     }
 }
+

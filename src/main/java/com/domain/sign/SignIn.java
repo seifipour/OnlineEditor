@@ -1,9 +1,9 @@
-package domain.sign;
+package com.domain.sign;
 
 import com.lambdista.util.Try;
-import domain.sign.pipline.CheckCredential;
-import domain.sign.pipline.CheckValidInput;
-import domain.sign.pipline.PipelineManager;
+import com.domain.sign.pipline.CheckCredential;
+import com.domain.sign.pipline.CheckValidInput;
+import com.domain.sign.pipline.PipelineManager;
 
 
 public class SignIn {

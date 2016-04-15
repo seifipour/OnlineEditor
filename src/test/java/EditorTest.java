@@ -2,7 +2,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import domain.Editor;
+import com.domain.Editor;
 
 import static org.junit.Assert.assertEquals;
 

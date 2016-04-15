@@ -1,12 +1,12 @@
-package domain.sign;
+package com.domain.sign;
 
 
 import com.lambdista.util.Try;
 
-import domain.sign.pipline.AddUserToDatabase;
-import domain.sign.pipline.CheckUserExistence;
-import domain.sign.pipline.CheckValidInput;
-import domain.sign.pipline.PipelineManager;
+import com.domain.sign.pipline.AddUserToDatabase;
+import com.domain.sign.pipline.CheckUserExistence;
+import com.domain.sign.pipline.CheckValidInput;
+import com.domain.sign.pipline.PipelineManager;
 
 public class SignUp {
 

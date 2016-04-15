@@ -1,6 +1,6 @@
-package domain;
+package com.domain;
 
-import services.iInputOutput;
+import com.services.iInputOutput;
 
 import java.io.IOException;
 

@@ -14,9 +14,9 @@ public class SignIn {
         this.pipelineManager = pipelineManager;
     }
 
-    public Try<Boolean> execute(String username, String password) {
+    public Try<Boolean> execute(String username, String password, AccountRepository accountRepository) {
         pipelineManager.register(new CheckValidInput(username, password));
-        pipelineManager.register(new CheckCredential(username, password));
+        pipelineManager.register(new CheckCredential(username, password,accountRepository));
         return pipelineManager.execute();
 
     }

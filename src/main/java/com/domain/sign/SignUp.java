@@ -10,12 +10,12 @@ import com.domain.sign.pipline.PipelineManager;
 
 public class SignUp {
 
-    public Try<Boolean> execute(String username, String password) {
+    public Try<Boolean> execute(String username, String password, AccountRepository accountRepository) {
 
         PipelineManager pipelineManager = new PipelineManager();
         pipelineManager.register(new CheckValidInput(username,password));
         pipelineManager.register(new CheckUserExistence(username));
-        pipelineManager.register(new AddUserToDatabase(username,password));
+        pipelineManager.register(new AddUserToDatabase(username,password,accountRepository));
 
         return pipelineManager.execute();
 

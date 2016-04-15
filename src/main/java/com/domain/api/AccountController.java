@@ -1,10 +1,12 @@
 package com.domain.api;
 
+import com.domain.sign.AccountRepository;
 import com.lambdista.util.Try;
 import com.domain.sign.SignIn;
 import com.domain.sign.SignUp;
 import com.domain.sign.exception.InValidCredentialException;
 import com.domain.sign.pipline.PipelineManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SignController {
+public class AccountController {
 
-    @RequestMapping(value = "/sign", method = RequestMethod.POST)
+    @Autowired
+    AccountRepository accountRepository;
+    @RequestMapping(value = "/account", method = RequestMethod.POST)
     public ResponseEntity signUp(@RequestParam(value = "username") String username,
                                  @RequestParam(value = "password") String password) {
-        Try<Boolean> status = new SignUp().execute(username, password);
+        Try<Boolean> status = new SignUp().execute(username, password,accountRepository);
 
         ResponseEntity responseEntity;
         if (status.isSuccess()) responseEntity = new ResponseEntity(HttpStatus.CREATED);
@@ -31,10 +35,10 @@ public class SignController {
     }
 
 
-    @RequestMapping(value = "/sign", method = RequestMethod.GET)
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ResponseEntity signIn(@RequestParam(value = "username") String username,
                                  @RequestParam(value = "password") String password) {
-        Try<Boolean> status = new SignIn(new PipelineManager()).execute(username, password);
+        Try<Boolean> status = new SignIn(new PipelineManager()).execute(username, password,accountRepository);
 
         ResponseEntity responseEntity;
         if (status.isSuccess()) responseEntity = new ResponseEntity(HttpStatus.ACCEPTED);

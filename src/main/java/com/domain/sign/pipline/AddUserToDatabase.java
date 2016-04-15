@@ -1,14 +1,18 @@
 package com.domain.sign.pipline;
 
+import com.domain.sign.Account;
+import com.domain.sign.AccountRepository;
 import com.lambdista.util.Try;
 
 public class AddUserToDatabase implements iPipeline {
     private final String username;
     private final String password;
+    private AccountRepository accountRepository;
 
-    public AddUserToDatabase(String username, String password){
+    public AddUserToDatabase(String username, String password, AccountRepository accountRepository){
         this.username = username;
         this.password = password;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -17,14 +21,9 @@ public class AddUserToDatabase implements iPipeline {
     }
 
     private Try<Boolean> execute(String username, String password) {
-        return new Try.Success<>(true);
-//        return Try.apply(() -> {
-//            Connection connection = GetConnection.create_connection();
-//            Statement statement = GetConnection.create_statement(connection);
-//            statement.executeUpdate("INSERT INTO tblUsers VALUES(" + username + ",'" + password + "')");
-//            statement.close();
-//            connection.close();
-//            return true;
-//        });
+        return Try.apply(() -> {
+            accountRepository.save(new Account(username,password));
+            return true;
+        });
     }
 }

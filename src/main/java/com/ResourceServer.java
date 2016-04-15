@@ -16,10 +16,10 @@ public class ResourceServer extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         // @formatter:off
         http
-                // Just for laughs, apply OAuth protection to only 2 resources
                 .requestMatcher(new OrRequestMatcher(
                         new AntPathRequestMatcher("/"),
-                        new AntPathRequestMatcher("/status")
+                        new AntPathRequestMatcher("/status"),
+                        new AntPathRequestMatcher("/account")
                 ))
                 .authorizeRequests()
                 .anyRequest().access("#oauth2.hasScope('read')");

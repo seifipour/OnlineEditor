@@ -1,4 +1,4 @@
-package com.domain.sign.exception;
+package com.domain.account.exception;
 
 public class InValidCredentialException extends Exception {
     public InValidCredentialException(String message, Throwable throwable){super(message,throwable);}

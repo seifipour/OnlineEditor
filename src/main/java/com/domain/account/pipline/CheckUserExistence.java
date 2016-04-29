@@ -1,16 +1,16 @@
-package com.domain.sign.pipline;
+package com.domain.account.pipline;
 
-import com.domain.sign.AccountRepository;
-import com.domain.sign.exception.UserExistException;
+import com.persistence.UserRepository;
+import com.domain.account.exception.UserExistException;
 import com.lambdista.util.Try;
 
 public class CheckUserExistence implements iPipeline {
     private String username;
-    private AccountRepository accountRepository;
+    private UserRepository userRepository;
 
-    public CheckUserExistence(String username, AccountRepository accountRepository) {
+    public CheckUserExistence(String username, UserRepository userRepository) {
         this.username = username;
-        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class CheckUserExistence implements iPipeline {
 
     private Try<Boolean> execute(String username) {
         Try<Boolean> isUserNotExist = Try.apply(() ->
-                        accountRepository.findByUsername(username).size() > 0
+                        userRepository.findByUsername(username) ==null
         );
         return isUserNotExist.flatMap(result -> result
                 ? new Try.Success<>(true)

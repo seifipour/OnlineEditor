@@ -1,19 +1,19 @@
-package com.domain.sign.pipline;
+package com.domain.account.pipline;
 
-import com.domain.sign.AccountRepository;
-import com.domain.sign.exception.InCorrectCredentialException;
+import com.persistence.UserRepository;
+import com.domain.account.exception.InCorrectCredentialException;
 import com.lambdista.util.Try;
 
 public class CheckCredential implements iPipeline {
 
     private final String username;
     private final String password;
-    private AccountRepository accountRepository;
+    private UserRepository userRepository;
 
-    public CheckCredential(String username, String password,AccountRepository accountRepository){
+    public CheckCredential(String username, String password,UserRepository userRepository){
         this.username = username;
         this.password = password;
-        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class CheckCredential implements iPipeline {
 
     private Try<Boolean> execute(String username, String password) {
         Try<Boolean> isCorrect = Try.apply(() ->
-                        accountRepository.findByUsernameAndPassword(username, password).size() > 0
+                        userRepository.findByUsernameAndPassword(username, password).isPresent()
         );
         return isCorrect.flatMap(result -> result ? new Try.Success<>(true) : new Try.Failure<>(new InCorrectCredentialException()));
     }

@@ -1,11 +1,14 @@
-package com.domain.sign.pipline;
+package com.domain.account.pipline;
 
-import com.domain.sign.exception.InValidCredentialException;
+import com.domain.account.exception.InValidCredentialException;
 import com.lambdista.util.Try;
 
+import java.util.regex.Pattern;
+
 public class CheckValidInput implements iPipeline {
-    private final String username;
-    private final String password;
+
+    private String username;
+    private String password;
 
     public CheckValidInput(String username, String password) {
         this.username = username;
@@ -18,7 +21,8 @@ public class CheckValidInput implements iPipeline {
     }
 
     private Try<Boolean> execute(String username, String password) {
-        return Try.apply(() -> !username.isEmpty() && !password.isEmpty())
+        Pattern pattern = Pattern.compile("^.+@.+\\..+$");
+        return Try.apply(() -> pattern.matcher(username).matches() && !username.isEmpty() && !password.isEmpty())
                 .flatMap(result -> result ? new Try.Success<>(true) :
                         new Try.Failure<>(new InValidCredentialException()));
     }

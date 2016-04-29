@@ -1,28 +1,27 @@
 package com.domain.api;
 
-import com.domain.sign.AccountRepository;
+import com.domain.account.Account;
+import com.domain.account.exception.InValidCredentialException;
 import com.lambdista.util.Try;
-import com.domain.sign.SignIn;
-import com.domain.sign.SignUp;
-import com.domain.sign.exception.InValidCredentialException;
-import com.domain.sign.pipline.PipelineManager;
+import com.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 public class AccountController {
 
     @Autowired
-    AccountRepository accountRepository;
+    UserRepository userRepository;
     @RequestMapping(value = "/account", method = RequestMethod.POST)
-    public ResponseEntity signUp(@RequestParam(value = "username") String username,
-                                 @RequestParam(value = "password") String password) {
-        Try<Boolean> status = new SignUp().execute(username, password,accountRepository);
+    public ResponseEntity account(@RequestBody Map<String,String> user) {
+        Try<Boolean> status = new Account().execute(user.get("name"),user.get("username"), user.get("password"), userRepository);
 
         ResponseEntity responseEntity;
         if (status.isSuccess()) responseEntity = new ResponseEntity(HttpStatus.CREATED);
@@ -34,18 +33,4 @@ public class AccountController {
 
     }
 
-
-    @RequestMapping(value = "/account", method = RequestMethod.GET)
-    public ResponseEntity signIn(@RequestParam(value = "username") String username,
-                                 @RequestParam(value = "password") String password) {
-        Try<Boolean> status = new SignIn(new PipelineManager()).execute(username, password,accountRepository);
-
-        ResponseEntity responseEntity;
-        if (status.isSuccess()) responseEntity = new ResponseEntity(HttpStatus.ACCEPTED);
-        else if (status.failed().get() instanceof InValidCredentialException)
-            responseEntity = new ResponseEntity(HttpStatus.BAD_REQUEST);
-        else responseEntity = new ResponseEntity(HttpStatus.FORBIDDEN);
-
-        return responseEntity;
-    }
 }
